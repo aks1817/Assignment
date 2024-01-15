@@ -135,13 +135,20 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
 
   const renderedSuggestions = useMemo(() => {
     return suggestions.map((suggestion, index) => (
-      <div
+      <span
+        className="chip"
         key={index}
-        className="suggestion-item"
         onClick={() => handleSuggestionClick(suggestion)}
       >
-        {suggestion}
-      </div>
+        <span className="chip-value">
+          <img
+            className="chip-avatar"
+            src={avatarUri}
+            alt={`Avatar for ${suggestion}`}
+          />
+          {suggestion}
+        </span>
+      </span>
     ));
   }, [suggestions, handleSuggestionClick]);
 

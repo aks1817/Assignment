@@ -19,6 +19,13 @@ body {
   line-height: 1;
   font-size: 1em;
 }
+.suggestion-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
 
 .chips-input {
   display: inline-block;
