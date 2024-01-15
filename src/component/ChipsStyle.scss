@@ -15,7 +15,6 @@ body {
 
 .chips {
   min-height: $chip-min-height;
-  border-bottom: 2px solid blue;
   line-height: 1;
   font-size: 1em;
 }
@@ -30,13 +29,14 @@ body {
 
 .chips-input {
   display: inline-block;
-  width: 33%;
+  width: 100%;
   min-height: $chip-min-height;
   margin-bottom: $chip-x-spacing;
   margin-left: $chip-x-spacing * 2;
   border: 0;
   outline: none;
   font-size: 0.9rem;
+  border-bottom: 2px solid blue;
 }
 
 .chip {
