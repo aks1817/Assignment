@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "./ChipsStyle.scss";
-const imgUri =
-  "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg";
+import { avatarUri, peopleNames } from "../constants";
+
 const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
   const [chips, setChips] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [INVALID_CHARS] = useState(/[^a-zA-Z0-9 ]/g);
   const KEY = {
     backspace: 8,
@@ -14,6 +15,19 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
   useEffect(() => {
     setChips(initialChips || []);
   }, [initialChips]);
+
+  const fetchSuggestions = useCallback(
+    (query) => {
+      const staticSuggestions = [...peopleNames];
+
+      const filteredSuggestions = staticSuggestions
+        .filter((name) => name.toLowerCase().includes(query.toLowerCase()))
+        .filter((name) => chips.indexOf(name) === -1);
+
+      setSuggestions(filteredSuggestions);
+    },
+    [chips]
+  );
 
   const onKeyDown = useCallback(
     (event) => {
@@ -64,6 +78,7 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
       }
 
       event.target.value = "";
+      setSuggestions([]);
     },
     [chips, max]
   );
@@ -83,6 +98,13 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
     [chips]
   );
 
+  const handleSuggestionClick = useCallback((suggestion) => {
+    setChips((prevChips) => [...prevChips, suggestion]);
+    setSuggestions((prevSuggestions) =>
+      prevSuggestions.filter((name) => name !== suggestion)
+    );
+  }, []);
+
   const focusInput = useCallback((event) => {
     const children = event.target.children;
 
@@ -95,7 +117,7 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
         <span className="chip-value">
           <img
             className="chip-avatar"
-            src={imgUri}
+            src={avatarUri}
             alt={`Avatar for ${chip}`}
           />
           {chip}
@@ -111,6 +133,18 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
     ));
   }, [chips, deleteChip]);
 
+  const renderedSuggestions = useMemo(() => {
+    return suggestions.map((suggestion, index) => (
+      <div
+        key={index}
+        className="suggestion-item"
+        onClick={() => handleSuggestionClick(suggestion)}
+      >
+        {suggestion}
+      </div>
+    ));
+  }, [suggestions, handleSuggestionClick]);
+
   const renderedPlaceholder = useMemo(
     () => (!max || chips.length < max ? placeholder : ""),
     [max, chips, placeholder]
@@ -125,7 +159,11 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
         placeholder={renderedPlaceholder}
         onKeyDown={onKeyDown}
         onKeyUp={clearInvalidChars}
+        onChange={(e) => fetchSuggestions(e.target.value)}
       />
+      {suggestions.length > 0 && (
+        <div className="suggestion-list">{renderedSuggestions}</div>
+      )}
     </div>
   );
 };
