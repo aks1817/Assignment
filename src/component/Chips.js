@@ -140,7 +140,7 @@ const Chips = ({ chips: initialChips, max, maxlength, placeholder }) => {
         key={index}
         onClick={() => handleSuggestionClick(suggestion)}
       >
-        <span className="chip-value">
+        <span className="suggestion-chip-value">
           <img
             className="chip-avatar"
             src={avatarUri}

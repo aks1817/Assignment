@@ -23,6 +23,7 @@ body {
   display: flex;
   flex-direction: column;
   max-height: 200px;
+  max-width: 250px;
   overflow-y: auto;
   border: 1px solid #ccc;
 }
@@ -55,6 +56,16 @@ body {
     color: $chip-color;
     font-weight: bold;
     border-radius: $chip-border-radius 0 0 $chip-border-radius;
+  }
+  .suggestion-chip-value {
+    display: flex;
+    padding: $chip-x-spacing;
+    padding-left: $chip-y-spacing;
+    padding-right: $chip-y-spacing / 2;
+    background: $chip-background;
+    color: $chip-color;
+    font-weight: bold;
+    border-radius: $chip-border-radius;
   }
   .chip-avatar {
     width: 16px;
